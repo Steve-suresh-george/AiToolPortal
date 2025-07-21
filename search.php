@@ -33,7 +33,7 @@ if ($search !== '') {
 <head>
   <meta charset="UTF-8">
   <title>Search Results - AIFindr</title>
-  <link rel="stylesheet" href="styl6.css">
+  <link rel="stylesheet" href="styles/styl6.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
