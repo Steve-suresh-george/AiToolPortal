@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login - AI Tool Repository</title>
+  <link rel="stylesheet" href="styl3.css" />
+  
+</head>
+<body>
+   <header>
+         <div class="navbar">
+          <h1>AIFindr</h1>
+                <div class="nav">
+                     <a class="a4 nave" href="home.html">Home</a>
+                    <a class="a2 nave" href="categories.html">Categories</a>
+                    <a class="a3 nave" href="submit.html">Submit Tool</a>
+                </div>
+        </div>
+  </header>
+        <div class="container">
+    <h2>Login or Sign Up</h2>
+    <form action="login.php" method="POST">
+      <input type="text" name="username" placeholder="Username" required />
+      <input type="password" name="password" placeholder="Password" required />
+       <p class="p1"><a href="#" onclick="showModal()">Forgot Password?</a></p>
+      <button type="submit">Login</button>
+    </form>
+    <p class="p2">Don't have an account? <a href="signup.html">Sign up</a></p>
+  </div>
+  
+  <!-- Forgot Password Modal -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <form action="php/reset_request.php" method="POST">
+        <h3>Reset Password</h3>
+        <input type="email" name="email" placeholder="Enter your email" required />
+        <button type="submit">Send Reset Link</button>
+      </form>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
+    
+  

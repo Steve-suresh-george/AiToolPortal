@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sign Up - AI Tool Repository</title>
+  <link rel="stylesheet" href="styl4.css" >
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <header>
+  <div class="navbar">
+     <h1 class="h1">AIFindr</h1>
+                <div class="nav">
+                     <a class="a4 nave" href="home.html">Home</a>
+                    <a class="a2 nave" href="categories.html">Categories</a>
+                    <a class="a3 nave" href="submit.html">Submit Tool</a>
+                </div>
+        </div>
+  </header>
+   <div class="container">
+    <h1>Create an Account</h1>
+    <form action="signup.php" method="POST">
+      <input type="text" name="fname" placeholder="first name" required />
+      <input type="text" name="lname" placeholder="last name" required/>
+      <input type="text" name="username" placeholder="username" required/>
+      <input type="password" name="password" placeholder="Password" required />
+      <button type="submit">Register</button>
+    </form>
+    <p class="p1">Already have an account? <a href="login.html">Login</a></p>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

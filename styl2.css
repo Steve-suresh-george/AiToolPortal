@@ -1,0 +1,243 @@
+.navbar{
+        display: flex;
+        background-color: transparent;
+        height: 65px;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        margin: 10px;
+}
+/* In your CSS file (e.g., style.css) */
+
+.nave{
+    text-decoration: none;
+    justify-content: space-evenly;
+    font-size: 20px;
+    margin-right: 20px;
+    color: blanchedalmond;
+}
+.nav{
+        justify-content: space-evenly; 
+        color: blanchedalmond;
+}
+
+ .nave:hover {
+      color: #1e90ff;
+    }
+*{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+}
+.search-container {
+      text-align: center;
+      margin-top: 80px;
+      margin-left: 10px;
+    }
+
+    .search-box {
+      padding: 10px;
+      font-size: 16px;
+      width: 400px;
+      border: 2px solid #555;
+      border-radius: 50px;
+      outline: grey;
+    }
+
+    .search-button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      background-color: white;
+      border-radius: 30px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    .search-button:hover {
+      background-color: grey;
+    }
+ header{
+    display: flex;
+ }
+ body{
+ background: linear-gradient(135deg, #020d1f, #0a1c35);
+ background-repeat: no-repeat;
+ }
+ .heading{
+          background: linear-gradient(135deg, #4285f4, #34a853);
+          padding: 15px 0;
+          box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+          border-radius: 5px;
+          color: white;
+          width: 120px;
+          margin-right: 950px;
+          text-align: center;
+}
+.tool1{
+    display: block;
+    background-color: #55555520;
+    border-radius: 5px;
+    text-decoration: none;
+    width: 350px;
+    height: 350px;
+    color: white;
+    margin-left: 30px;
+    margin-top: 30px;
+    text-align: center;
+}
+.tool1 a{
+  text-decoration: none;
+  color: white;
+}
+.tool1 a:hover{
+  color: blue;
+}
+.tool2{
+    display: block;
+    background-color: #55555520;
+    border-radius: 5px;
+    text-decoration: none;
+    width: 350px;
+    height: 350px;
+    color: white;
+    margin-left: 30px;
+    margin-top: 30px;
+    text-align: center;
+}
+.tool2 a{
+  text-decoration: none;
+  color: white;
+}
+.tool2 a:hover{
+  color: blue;
+}
+.tool3{
+    display: block;
+    background-color: #55555520;
+    border-radius: 5px;
+    text-decoration: none;
+    width: 350px;
+    height: 350px;
+    color: white;
+    margin-left: 30px;
+    margin-top: 30px;
+    text-align: center;
+}
+.tool3 a{
+  text-decoration: none;
+  color: white;
+}
+.tool3 a:hover{
+  color: blue;
+}
+.tool4{
+    display: block;
+    background-color: #55555520;
+    border-radius: 5px;
+    text-decoration: none;
+    width: 350px;
+    height: 350px;
+    color: white;
+    margin-left: 30px;
+    margin-top: 30px;
+    text-align: center;
+}
+.tool4 a{
+  text-decoration: none;
+  color: white;
+}
+.tool4 a:hover{
+  color: blue;
+}
+.tool5{
+    display: block;
+    background-color: #55555520;
+    border-radius: 5px;
+    text-decoration: none;
+    width: 350px;
+    height: 350px;
+    color: white;
+    margin-left: 30px;
+    margin-top: 30px;
+    text-align: center;
+}
+.tool5 a{
+  text-decoration: none;
+  color: white;
+}
+.tool5 a:hover{
+  color: blue;
+}
+.tool6{
+    display: block;
+    background-color: #55555520;
+    border-radius: 5px;
+    text-decoration: none;
+    width: 350px;
+    height: 350px;
+    color: white;
+    margin-left: 30px;
+    margin-top: 30px;
+    text-align: center;
+}
+.tool6 a{
+  text-decoration: none;
+  color: white;
+}
+.tool6 a:hover{
+  color: blue;
+}
+.tool7{
+    display: block;
+    background-color: #55555520;
+    border-radius: 5px;
+    text-decoration: none;
+    width: 350px;
+    height: 350px;
+    color: white;
+    margin-left: 30px;
+    margin-top: 30px;
+    text-align: center;
+}
+.tool7 a{
+  text-decoration: none;
+  color: white;
+}
+.tool7 a:hover{
+  color: blue;
+}
+.tool8{
+    display: block;
+    background-color: #55555520;
+    border-radius: 5px;
+    text-decoration: none;
+    width: 350px;
+    height: 350px;
+    color: white;
+    margin-left: 30px;
+    margin-top: 30px;
+    text-align: center;
+    font-size: 10px;
+}
+.tool8 a{
+  text-decoration: none;
+  color: white;
+}
+.tool8 a:hover{
+  color: blue;
+}
+.t{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    margin-left: 100px;
+    margin-right: 100px;
+}
+.fa-circle-user{
+  color: white;
+  font-size: 30px;
+}
