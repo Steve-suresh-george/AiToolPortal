@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
   <meta charset="UTF-8">
   <title>Suggest a Tool - AIFindr</title>
-  <link rel="stylesheet" href="styl7.css">
+  <link rel="stylesheet" href="styles/styl7.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
@@ -50,8 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="nav">
                      <a class="a4 nave" href="home.html">Home</a>
                     <a class="a2 nave" href="categories.html">Categories</a>
-                    <a class="a3 nave" href="submit.html">Submit Tool</a>
-                    <a href="user.html"><i class="fa-solid fa-circle-user"></i></a>
+                    <a href="user.php"><i class="fa-solid fa-circle-user"></i></a>
                 </div>
         </div>
   </header>

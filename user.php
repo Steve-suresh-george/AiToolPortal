@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION['username'])) {
+    header("Location: signup.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +27,7 @@
 
     <main class="main-content">
       <header class="top-bar">
-        <h2>Welcome back, User!</h2>
+        <h2>Welcome back, <?php echo $_SESSION['username']; ?> 👋</h2>
         <div class="search-bar">
           <input type="text" placeholder="Search tools...">
           <button><i class="fas fa-search"></i></button>
