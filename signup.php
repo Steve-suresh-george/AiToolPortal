@@ -8,17 +8,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Encrypt password
 
-    // Insert query
-    $sql = "INSERT INTO users (firstname, lastname, username, password)
-            VALUES ('$firstname', '$lastname', '$username', '$password')";
-
-    if ($conn->query($sql) === TRUE) {
-        // Set session and redirect to dashboard
-        $_SESSION['username'] = $username;
-        header("Location: user.php");
-        exit();
+    // Insert query using prepared statements
+    $stmt = $conn->prepare("INSERT INTO users (firstname, lastname, username, password) VALUES (?, ?, ?, ?)");
+    if ($stmt) {
+        $stmt->bind_param("ssss", $firstname, $lastname, $username, $password);
+        if ($stmt->execute()) {
+            // Set session and redirect to dashboard
+            $_SESSION['username'] = $username;
+            header("Location: user.php");
+            exit();
+        } else {
+            echo "Error: " . $stmt->error;
+        }
+        $stmt->close();
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        echo "Error: " . $conn->error;
     }
 }
 ?>
