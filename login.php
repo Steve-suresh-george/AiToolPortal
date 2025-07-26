@@ -17,10 +17,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: user.php"); // ✅ Redirect here
             exit();
         } else {
-            echo "<script>alert('Invalid password'); window.location.href='login_form.html';</script>";
+            echo "<script>alert('Invalid password'); window.location.href='login.html';</script>";
         }
     } else {
-        echo "<script>alert('Username not found'); window.location.href='login_form.html';</script>";
+        echo "<script>alert('Username not found'); window.location.href='login.html';</script>";
     }
 }
 ?>
