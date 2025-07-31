@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
      <h1 class="h1">AIFindr</h1>
                 <div class="nav">
                      <a class="a4 nave" href="home.html">Home</a>
-                    <a class="a2 nave" href="categories.html">Categories</a>
+                    <a class="a2 nave" href="categories.php">Categories</a>
                     <a href="user.php"><i class="fa-solid fa-circle-user"></i></a>
                 </div>
         </div>

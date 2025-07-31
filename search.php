@@ -40,7 +40,7 @@ if ($search !== '') {
   <header class="header">
     <h1 class="logo">AIFindr</h1>
     <nav class="nav">
-      <a href="categories.html">Categories</a>
+      <a href="categories.php">Categories</a>
       <a href="suggest.php">Submit Tool</a>
       <a href="signup.html">Sign Up</a>
       <a href="user.html"><i class="fas fa-user-circle"></i></a>

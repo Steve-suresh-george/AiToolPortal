@@ -21,7 +21,7 @@ if (!isset($_SESSION['username'])) {
       <ul class="nav-links">
         <a href="home.html"><li><i class="fas fa-home"></i>Home</li></a>
         <a href="categories.html"><li><i class="fa-solid fa-list"></i> Categories</li></a>
-        <a href="submit.html"><li><i class="fa-solid fa-wrench"></i> Submit tool</li></a>
+        <a href="suggest.php"><li><i class="fa-solid fa-wrench"></i> Submit tool</li></a>
       </ul>
     </aside>
 
