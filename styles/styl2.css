@@ -75,157 +75,257 @@
           margin-right: 950px;
           text-align: center;
 }
-.tool1{
-    display: block;
-    background-color: #55555520;
-    border-radius: 5px;
-    text-decoration: none;
+.tool1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: linear-gradient(145deg, #2b2b2b, #1c1c1c);
+    border: 1px solid #333;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     width: 350px;
     height: 350px;
     color: white;
     margin-left: 30px;
     margin-top: 30px;
+    padding: 20px;
     text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.tool1 a{
-  text-decoration: none;
-  color: white;
+
+.tool1:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
 }
-.tool1 a:hover{
-  color: blue;
+
+.tool1 a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    margin-top: auto;
+    transition: color 0.2s ease;
 }
+
+.tool1 a:hover {
+    color: #00aaff;
+}
+
 .tool2{
-    display: block;
-    background-color: #55555520;
-    border-radius: 5px;
-    text-decoration: none;
+     display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: linear-gradient(145deg, #2b2b2b, #1c1c1c);
+    border: 1px solid #333;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     width: 350px;
     height: 350px;
     color: white;
     margin-left: 30px;
     margin-top: 30px;
+    padding: 20px;
     text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.tool2:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
 }
 .tool2 a{
-  text-decoration: none;
-  color: white;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    margin-top: auto;
+    transition: color 0.2s ease;
 }
 .tool2 a:hover{
-  color: blue;
+  color: #00aaff;
 }
 .tool3{
-    display: block;
-    background-color: #55555520;
-    border-radius: 5px;
-    text-decoration: none;
+     display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: linear-gradient(145deg, #2b2b2b, #1c1c1c);
+    border: 1px solid #333;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     width: 350px;
     height: 350px;
     color: white;
     margin-left: 30px;
     margin-top: 30px;
+    padding: 20px;
     text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.tool3:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
 }
 .tool3 a{
-  text-decoration: none;
-  color: white;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    margin-top: auto;
+    transition: color 0.2s ease;
 }
 .tool3 a:hover{
-  color: blue;
+  color: #00aaff;
 }
 .tool4{
-    display: block;
-    background-color: #55555520;
-    border-radius: 5px;
-    text-decoration: none;
+     display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: linear-gradient(145deg, #2b2b2b, #1c1c1c);
+    border: 1px solid #333;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     width: 350px;
     height: 350px;
     color: white;
     margin-left: 30px;
     margin-top: 30px;
+    padding: 20px;
     text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.tool4:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
 }
 .tool4 a{
   text-decoration: none;
-  color: white;
+    color: white;
+    font-weight: bold;
+    margin-top: auto;
+    transition: color 0.2s ease;
 }
 .tool4 a:hover{
-  color: blue;
+  color: #00aaff;
 }
 .tool5{
-    display: block;
-    background-color: #55555520;
-    border-radius: 5px;
-    text-decoration: none;
+     display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: linear-gradient(145deg, #2b2b2b, #1c1c1c);
+    border: 1px solid #333;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     width: 350px;
     height: 350px;
     color: white;
     margin-left: 30px;
     margin-top: 30px;
+    padding: 20px;
     text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.tool5:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
 }
 .tool5 a{
-  text-decoration: none;
-  color: white;
+ text-decoration: none;
+    color: white;
+    font-weight: bold;
+    margin-top: auto;
+    transition: color 0.2s ease;
 }
 .tool5 a:hover{
-  color: blue;
+  color: #00aaff;
 }
 .tool6{
-    display: block;
-    background-color: #55555520;
-    border-radius: 5px;
-    text-decoration: none;
+     display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: linear-gradient(145deg, #2b2b2b, #1c1c1c);
+    border: 1px solid #333;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     width: 350px;
     height: 350px;
     color: white;
     margin-left: 30px;
     margin-top: 30px;
+    padding: 20px;
     text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.tool6:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
 }
 .tool6 a{
   text-decoration: none;
-  color: white;
+    color: white;
+    font-weight: bold;
+    margin-top: auto;
+    transition: color 0.2s ease;
 }
 .tool6 a:hover{
-  color: blue;
+  color: #00aaff;
 }
 .tool7{
-    display: block;
-    background-color: #55555520;
-    border-radius: 5px;
-    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: linear-gradient(145deg, #2b2b2b, #1c1c1c);
+    border: 1px solid #333;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     width: 350px;
     height: 350px;
     color: white;
     margin-left: 30px;
     margin-top: 30px;
+    padding: 20px;
     text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.tool7:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
 }
 .tool7 a{
-  text-decoration: none;
-  color: white;
+ text-decoration: none;
+    color: white;
+    font-weight: bold;
+    margin-top: auto;
+    transition: color 0.2s ease;
 }
 .tool7 a:hover{
-  color: blue;
+  color: #00aaff;
 }
 .tool8{
-    display: block;
-    background-color: #55555520;
-    border-radius: 5px;
-    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: linear-gradient(145deg, #2b2b2b, #1c1c1c);
+    border: 1px solid #333;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     width: 350px;
     height: 350px;
     color: white;
     margin-left: 30px;
     margin-top: 30px;
+    padding: 20px;
     text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.tool8:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
 }
 .tool8 a{
   text-decoration: none;
-  color: white;
+    color: white;
+    font-weight: bold;
+    margin-top: auto;
+    transition: color 0.2s ease;
 }
 .tool8 a:hover{
-  color: blue;
+  color: #00aaff;
 }
 .t{
     display: flex;

@@ -38,7 +38,7 @@ if ($search !== '') {
 <body>
 
 <header>
-  <div class="logo">AIFindr</div>
+  <h1 class="logo">AIFindr</h1>
   <nav>
     <a href="home.php">Home</a>
     <a href="search.php">Search</a>
