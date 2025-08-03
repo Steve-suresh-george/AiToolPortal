@@ -34,15 +34,15 @@ $result = $conn->query($sql);
 <html>
 <head>
     <title><?php echo $categoryName; ?> Tools</title>
-    <link rel="stylesheet" href="styles/styl17.css">
+    <link rel="stylesheet" href="styles/styl16.css">
 </head>
 <body>
      <header>
+        <h1 class="heading">AIFindr</h1>
          <div class="navbar">
-            <h1 class="heading">AIFindr</h1>
                 <div class="nav">
                     <a class="a2 nave" href="categories.php">Categories</a>
-                    <a  class="a3 nave" href="suggest.php" target="_blank">Submit Tool</a>
+                    <a  class="a3 nave" href="suggest.php">Submit Tool</a>
                     <a class="a4 nave" href="signup.html">Sign up</a>
                     <a href="user.php"><i class="fa-solid fa-circle-user"></i></a>
                 </div>
@@ -57,11 +57,11 @@ $result = $conn->query($sql);
             <h3><?php echo $row['name']; ?></h3>
             <p><strong>Description:</strong> <?php echo $row['description']; ?></p>
             <p><strong>Pricing:</strong> <?php echo $row['pricing']; ?></p>
-            <p><a href="<?php echo $row['websitelink']; ?>" target="_blank">Visit Tool</a></p>
+            <p><a href="<?php echo $row['websitelink']; ?>" target="_blank">Visit Site</a></p>
 
             <form method="POST" class="feedback-form">
                 <input type="hidden" name="toolid" value="<?php echo $row['toolid']; ?>">
-                <textarea name="feedback" rows="2" cols="40" placeholder="Your feedback..."><?php echo $row['feedback']; ?></textarea><br>
+                <textarea name="feedback" rows="5" cols="100" placeholder="Your feedback..."><?php echo $row['feedback']; ?></textarea><br>
                 <button type="submit">Submit Feedback</button>
             </form>
         </div>

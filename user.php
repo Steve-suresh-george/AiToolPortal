@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['username'])) {
-    header("Location: signup.php");
+    header("Location: login.html");
     exit();
 }
 ?>
@@ -22,16 +22,19 @@ if (!isset($_SESSION['username'])) {
         <a href="home.html"><li><i class="fas fa-home"></i>Home</li></a>
         <a href="categories.html"><li><i class="fa-solid fa-list"></i> Categories</li></a>
         <a href="suggest.php"><li><i class="fa-solid fa-wrench"></i> Submit tool</li></a>
+        <a href="logout.php">Logout</a>
       </ul>
     </aside>
 
     <main class="main-content">
       <header class="top-bar">
         <h2>Welcome back, <?php echo $_SESSION['username']; ?> 👋</h2>
+        <a href="search.php">
         <div class="search-bar">
           <input type="text" placeholder="Search tools...">
           <button><i class="fas fa-search"></i></button>
         </div>
+        </a>
       </header>
 
       <section class="cards">
@@ -50,5 +53,6 @@ if (!isset($_SESSION['username'])) {
       </section>
     </main>
   </div>
+  
 </body>
 </html>

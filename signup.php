@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $firstname = $_POST['fname'];
     $lastname = $_POST['lname'];
     $username = $_POST['username'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Encrypt password
+    $hashedpassword = password_hash($_POST['password'], PASSWORD_DEFAULT); // Encrypt password
 
     // Insert query using prepared statements
     $stmt = $conn->prepare("INSERT INTO users (firstname, lastname, username, password) VALUES (?, ?, ?, ?)");
