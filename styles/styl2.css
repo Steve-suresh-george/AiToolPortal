@@ -79,7 +79,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background: linear-gradient(145deg, #2b2b2b, #1c1c1c);
+    background: linear-gradient(145deg, #1f1f2e, #0e0e1c);
     border: 1px solid #333;
     border-radius: 12px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
@@ -91,6 +91,7 @@
     padding: 20px;
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-color: white;
 }
 
 .tool1:hover {
@@ -114,7 +115,7 @@
      display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background: linear-gradient(145deg, #2b2b2b, #1c1c1c);
+    background: linear-gradient(145deg, #1f1f2e, #0e0e1c);
     border: 1px solid #333;
     border-radius: 12px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
@@ -126,6 +127,7 @@
     padding: 20px;
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-color: white;
 }
 .tool2:hover {
     transform: translateY(-5px);
@@ -145,7 +147,7 @@
      display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background: linear-gradient(145deg, #2b2b2b, #1c1c1c);
+    background: linear-gradient(145deg, #1f1f2e, #0e0e1c);
     border: 1px solid #333;
     border-radius: 12px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
@@ -157,6 +159,7 @@
     padding: 20px;
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-color: white;
 }
 .tool3:hover {
     transform: translateY(-5px);
@@ -176,7 +179,7 @@
      display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background: linear-gradient(145deg, #2b2b2b, #1c1c1c);
+    background: linear-gradient(145deg, #1f1f2e, #0e0e1c);
     border: 1px solid #333;
     border-radius: 12px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
@@ -188,6 +191,7 @@
     padding: 20px;
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-color: white;
 }
 .tool4:hover {
     transform: translateY(-5px);
@@ -207,7 +211,7 @@
      display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background: linear-gradient(145deg, #2b2b2b, #1c1c1c);
+    background: linear-gradient(145deg, #1f1f2e, #0e0e1c);
     border: 1px solid #333;
     border-radius: 12px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
@@ -219,6 +223,7 @@
     padding: 20px;
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-color: white;
 }
 .tool5:hover {
     transform: translateY(-5px);
@@ -238,7 +243,7 @@
      display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background: linear-gradient(145deg, #2b2b2b, #1c1c1c);
+    background: linear-gradient(145deg, #1f1f2e, #0e0e1c);
     border: 1px solid #333;
     border-radius: 12px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
@@ -250,6 +255,7 @@
     padding: 20px;
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-color: white;
 }
 .tool6:hover {
     transform: translateY(-5px);
@@ -269,7 +275,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background: linear-gradient(145deg, #2b2b2b, #1c1c1c);
+    background: linear-gradient(145deg, #1f1f2e, #0e0e1c);
     border: 1px solid #333;
     border-radius: 12px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
@@ -281,6 +287,7 @@
     padding: 20px;
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-color: white;
 }
 .tool7:hover {
     transform: translateY(-5px);
@@ -300,7 +307,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background: linear-gradient(145deg, #2b2b2b, #1c1c1c);
+    background: linear-gradient(145deg, #1f1f2e, #0e0e1c);
     border: 1px solid #333;
     border-radius: 12px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
@@ -312,6 +319,7 @@
     padding: 20px;
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-color: white;
 }
 .tool8:hover {
     transform: translateY(-5px);

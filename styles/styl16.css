@@ -22,6 +22,7 @@ body {
         }
         .feedback-form {
             margin-top: 10px;
+            border-color: wheat;
         }
         .navbar{
         display: block;
@@ -81,5 +82,5 @@ button{
     background-color: burlywood;
 }
 .nav a{
-    color: black;   
+    color: white;   
 }

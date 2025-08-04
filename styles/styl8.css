@@ -29,7 +29,6 @@ body {
 .nav i {
   font-size: 22px;
   color: white;
-  margin-left: 15px;
 }
 
 .container {
@@ -60,6 +59,7 @@ h2 {
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 100px;
   align-content: center;
+  justify-items: center;
 }
 
 .category-card {
@@ -74,7 +74,8 @@ h2 {
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   width: 200px;
   height: 200px;
-  text-align: center;
+  align-items: center;
+  justify-content: center;
 }
 
 .category-card:hover {
