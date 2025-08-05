@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $link = trim($_POST['link']);
 
   if ($name && $description && $link) {
-    $stmt = $conn->prepare("INSERT INTO suggested_tools (name, description, link) VALUES (?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO suggestions (name, description, websitelink) VALUES (?, ?, ?)");
     $stmt->bind_param("sss", $name, $description, $link);
 
     if ($stmt->execute()) {
@@ -38,43 +38,167 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Suggest a Tool - AIFindr</title>
-  <link rel="stylesheet" href="styles/styl7.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suggest a Tool - AIFindr</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%);
+            min-height: 100vh;
+        }
+        .suggestion-form {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .form-control, .form-control:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #4285f4;
+            box-shadow: 0 0 0 0.25rem rgba(66, 133, 244, 0.25);
+        }
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        .page-title {
+            background: linear-gradient(135deg, #4285f4, #34a853);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .submit-btn {
+            background: linear-gradient(135deg, #4285f4, #34a853);
+            border: none;
+            transition: transform 0.3s ease;
+        }
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #3367d6, #2d904d);
+        }
+        .form-label {
+            color: #4285f4;
+            font-weight: 500;
+        }
+    </style>
 </head>
-<body>
-    <header>
-  <div class="navbar">
-     <h1 class="h1">AIFindr</h1>
-                <div class="nav">
-                     <a class="a4 nave" href="home.html">Home</a>
-                    <a class="a2 nave" href="categories.php">Categories</a>
-                    <a href="user.php"><i class="fa-solid fa-circle-user"></i></a>
-                </div>
+<body class="bg-dark">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="home.html">
+                <span class="bg-primary bg-gradient px-3 py-2 rounded-3 fw-bold">AIFindr</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.php">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="categories.php">Categories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="user.php">
+                            <i class="fa-solid fa-circle-user fa-lg"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
-  </header>
-  <div class="container">
-    <h2>Suggest a New AI Tool</h2>
+    </nav>
 
-    <?php if ($success): ?>
-      <p class="success"><?= htmlspecialchars($success) ?></p>
-    <?php elseif ($error): ?>
-      <p class="error"><?= htmlspecialchars($error) ?></p>
-    <?php endif; ?>
+    <!-- Main Content -->
+    <div class="container py-5 mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <h1 class="display-5 text-center mb-4 fw-bold page-title">
+                    Suggest a New AI Tool
+                </h1>
 
-    <form action="" method="post">
-      <label for="name">Tool Name:</label>
-      <input type="text" id="name" name="name" required>
+                <?php if ($success): ?>
+                    <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                        <i class="fas fa-check-circle me-2"></i><?= htmlspecialchars($success) ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                <?php elseif ($error): ?>
+                    <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                        <i class="fas fa-exclamation-circle me-2"></i><?= htmlspecialchars($error) ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                <?php endif; ?>
 
-      <label for="description">Description:</label>
-      <textarea id="description" name="description" rows="4" required></textarea>
+                <div class="suggestion-form rounded-4 p-4">
+                    <form action="" method="post" class="needs-validation" novalidate>
+                        <div class="mb-4">
+                            <label for="name" class="form-label">
+                                <i class="fas fa-robot me-2"></i>Tool Name
+                            </label>
+                            <input type="text" class="form-control" id="name" name="name" 
+                                   placeholder="Enter the AI tool's name" required>
+                            <div class="invalid-feedback text-light">
+                                Please provide the tool name
+                            </div>
+                        </div>
 
-      <label for="link">Tool Link:</label>
-      <input type="url" id="link" name="link" required>
+                        <div class="mb-4">
+                            <label for="description" class="form-label">
+                                <i class="fas fa-align-left me-2"></i>Description
+                            </label>
+                            <textarea class="form-control" id="description" name="description" rows="4" 
+                                    placeholder="Describe what this AI tool does..." required></textarea>
+                            <div class="invalid-feedback text-light">
+                                Please provide a description
+                            </div>
+                        </div>
 
-      <button type="submit">Submit Suggestion</button>
-    </form>
-  </div>
+                        <div class="mb-4">
+                            <label for="link" class="form-label">
+                                <i class="fas fa-link me-2"></i>Tool Link
+                            </label>
+                            <input type="url" class="form-control" id="link" name="link" 
+                                   placeholder="https://..." required>
+                            <div class="invalid-feedback text-light">
+                                Please provide a valid URL
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn submit-btn text-white w-100 py-2">
+                            <i class="fas fa-paper-plane me-2"></i>Submit Suggestion
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Form Validation Script -->
+    <script>
+        (() => {
+            'use strict';
+            const forms = document.querySelectorAll('.needs-validation');
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
 </body>
 </html>
