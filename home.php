@@ -113,6 +113,9 @@ session_start();
                         <a class="nav-link" href="signup.php">Sign up</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="feedback.php">Feedback</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="user.php">
                             <i class="fa-solid fa-circle-user fa-lg"></i>
                         </a>

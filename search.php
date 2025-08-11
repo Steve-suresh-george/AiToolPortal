@@ -110,10 +110,13 @@ if ($search !== '') {
                         <a class="nav-link" href="home.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="search.php">Search</a>
+                        <a class="nav-link active" href="signup.php">Sign up</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="suggest.php">Submit Tool</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="feedback.php">Feedback</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="user.php">

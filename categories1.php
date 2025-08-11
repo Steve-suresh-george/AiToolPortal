@@ -13,7 +13,7 @@ $categoryName = $categoryResult->num_rows > 0 ? $categoryResult->fetch_assoc()['
 // Feedback success message
 $feedbackSuccess = false;
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['feedback'], $_POST['toolid'])) {
-    $feedback = $_POST['feedback'];
+    $feedback = json_encode($_POST['feedback']);
     $toolid = intval($_POST['toolid']);
     $stmt = $conn->prepare("UPDATE tools SET feedback = ? WHERE toolid = ?");
     if ($stmt) {

@@ -9,8 +9,7 @@ require_once 'conn.php';
 
 // Fetch all feedback entries with tool names
 $query = "SELECT feedback, name 
-          FROM tools  
-          ORDER BY f.created_at DESC";
+          FROM tools";
 $result = mysqli_query($conn, $query);
 ?>
 
@@ -87,31 +86,11 @@ $result = mysqli_query($conn, $query);
                             <div class="d-flex justify-content-between align-items-start mb-3">
                                 <div>
                                     <h3 class="tool-name h5 mb-1">
-                                        <?php echo htmlspecialchars($row['tool_name']); ?>
+                                        <?php echo htmlspecialchars($row['name']); ?>
                                     </h3>
-                                    <div class="rating">
-                                        <?php
-                                        $rating = intval($row['rating']);
-                                        for ($i = 0; $i < 5; $i++) {
-                                            if ($i < $rating) {
-                                                echo '<i class="fas fa-star"></i>';
-                                            } else {
-                                                echo '<i class="far fa-star"></i>';
-                                            }
-                                        }
-                                        ?>
-                                    </div>
                                 </div>
-                                <span class="date">
-                                    <?php echo date('F j, Y', strtotime($row['created_at'])); ?>
-                                </span>
                             </div>
-                            <p class="mb-2"><?php echo htmlspecialchars($row['feedback_text']); ?></p>
-                            <div class="text-end">
-                                <small class="text-muted">
-                                    Submitted by: <?php echo htmlspecialchars($row['user_name']); ?>
-                                </small>
-                            </div>
+                            <p class="mb-2"><?php echo htmlspecialchars (json_decode($row['feedback'], true)); ?></p>
                         </div>
                     </div>
                 <?php endwhile; ?>

@@ -15,15 +15,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $user = $result->fetch_assoc();
 
     if ($user && password_verify($password, $user['password'])) {
-        $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['username'];
-        $_SESSION['role'] = $user['role'];
+        $_SESSION['password'] = $user['password'];
         header("Location: user.php");
         exit();
     } else {
         $error = "Invalid username or password!";
     }
+    $stmt->close();
+    $error = "Please fill in all fields.";
+    if (empty($username) || empty($password)) {
+        $error = "All fields are required.";
+    }
 }
+$conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
