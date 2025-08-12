@@ -1,31 +1,37 @@
 <?php
 session_start();
-include 'conn.php';
+include 'conn.php'; // database connection
 
-$error = '';
+$error = "";
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = trim($_POST['username']);
     $password = $_POST['password'];
 
-    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
+    $sql = "SELECT  password, role FROM users WHERE username = ?";
+    $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
-    $user = $result->fetch_assoc();
 
-    if ($user && password_verify($password, $user['password'])) {
-        $_SESSION['username'] = $user['username'];
-        $_SESSION['password'] = $user['password'];
-        header("Location: user.php");
-        exit();
+    if ($result->num_rows === 1) {
+        $row = $result->fetch_assoc();
+
+        if (password_verify($password, $row['password'])) {
+            $_SESSION['username'] = $username;
+            $_SESSION['role'] = $row['role'];
+
+            if ($row['role'] == 1) {
+                header("Location: admin.php");
+            } else {
+                header("Location: user.php");
+            }
+            exit();
+        } else {
+            $error = "Invalid username or password.";
+        }
     } else {
-        $error = "Invalid username or password!";
-    }
-    $stmt->close();
-    $error = "Please fill in all fields.";
-    if (empty($username) || empty($password)) {
-        $error = "All fields are required.";
+        $error = "Invalid username or password.";
     }
 }
 $conn->close();
@@ -39,13 +45,13 @@ $conn->close();
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 </head>
 <body class="bg-dark">
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="home.html">
+            <a class="navbar-brand" href="home.php">
                 <span class="bg-primary bg-gradient px-3 py-2 rounded-3 fw-bold">AIFindr</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -54,13 +60,16 @@ $conn->close();
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
+                        <a class="nav-link" href="home.php">Home</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="categories.php">Categories</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="suggest.php">Submit Tool</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="signup.html">Sign up</a>
+                        <a class="nav-link" href="signup.php">Sign up</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="user.php">
