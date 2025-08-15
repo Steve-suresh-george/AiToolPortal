@@ -5,7 +5,7 @@ include 'conn.php'; // DB connection file
 
 $sql = "SELECT name, description, websitelink 
         FROM suggestions 
-        WHERE username = ?"; // Fetch only for the logged-in user
+        WHERE name = ?"; // Fetch only for the logged-in user
 
 $stmt = mysqli_prepare($conn, $sql);
 mysqli_stmt_bind_param($stmt, "i", $name);
@@ -34,7 +34,6 @@ $result = mysqli_stmt_get_result($stmt);
                     <div class="card-body">
                         <h5 class="card-title">' . htmlspecialchars($row['name']) . '</h5>
                         <p class="card-text">' . htmlspecialchars($row['description']) . '</p>
-                        <p class="card-text">' . htmlspecialchars($row['username']) . '</p>
                         <p class="card-text">
                             <a href="' . htmlspecialchars($row['websitelink']) . '">' . htmlspecialchars($row['websitelink']) . '</a>
                         </p>
