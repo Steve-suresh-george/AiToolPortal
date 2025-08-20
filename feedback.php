@@ -7,10 +7,23 @@ if (!isset($_SESSION['username'])) {
 
 require_once 'conn.php';
 
-// Fetch all feedback entries with tool names
-$query = "SELECT feedback, name 
-          FROM tools";
-$result = mysqli_query($conn, $query);
+// Get the logged-in user's username from the session
+$current_username = $_SESSION['username'];
+
+// Fetch all feedback entries for the logged-in user
+// This assumes you have a `feedback` table with a `username` column
+$query = "SELECT t.name, f.comment, f.created_at
+          FROM feedback AS f
+          JOIN tools AS t ON f.toolid = t.toolid
+          WHERE f.username = ?
+          ORDER BY f.created_at DESC";
+
+// Using prepared statements to prevent SQL injection
+$stmt = $conn->prepare($query);
+$stmt->bind_param("s", $current_username);
+$stmt->execute();
+$result = $stmt->get_result();
+
 ?>
 
 <!DOCTYPE html>
@@ -18,10 +31,8 @@ $result = mysqli_query($conn, $query);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tool Feedback - AIFindr</title>
-    <!-- Bootstrap CSS -->
+    <title>My Feedback - AIFindr</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <style>
         body {
@@ -72,15 +83,12 @@ $result = mysqli_query($conn, $query);
 <body>
     <div class="container py-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="page-title display-5 mb-0">Tool Feedback</h1>
-            <a href="categories.php" class="btn back-btn">
-                <i class="fas fa-arrow-left me-2"></i>Back to Categories
-            </a>
+            <h1 class="page-title display-5 mb-0">My Feedback</h1>
         </div>
 
-        <?php if (mysqli_num_rows($result) > 0): ?>
+        <?php if ($result && mysqli_num_rows($result) > 0): ?>
             <div class="row">
-                <?php while ($row = mysqli_fetch_assoc($result)): ?>
+                <?php while ($row = $result->fetch_assoc()): ?>
                     <div class="col-12">
                         <div class="feedback-card p-4 rounded-4">
                             <div class="d-flex justify-content-between align-items-start mb-3">
@@ -89,8 +97,11 @@ $result = mysqli_query($conn, $query);
                                         <?php echo htmlspecialchars($row['name']); ?>
                                     </h3>
                                 </div>
+                                <?php if (isset($row['created_at'])): ?>
+                                    <span class="date"><?php echo date("F j, Y", strtotime($row['created_at'])); ?></span>
+                                <?php endif; ?>
                             </div>
-                            <p class="mb-2"><?php echo htmlspecialchars (json_decode($row['feedback'], true)); ?></p>
+                            <p class="mb-2"><?php echo htmlspecialchars($row['comment']); ?></p>
                         </div>
                     </div>
                 <?php endwhile; ?>
@@ -98,13 +109,16 @@ $result = mysqli_query($conn, $query);
         <?php else: ?>
             <div class="text-center py-5">
                 <i class="fas fa-comments fa-3x mb-3 text-secondary"></i>
-                <h3>No Feedback Yet</h3>
-                <p class="text-muted">Be the first to leave feedback for our tools!</p>
+                <h3>No Feedback Found</h3>
+                <p class="text-muted">You have not submitted any feedback yet.</p>
             </div>
         <?php endif; ?>
     </div>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+<?php
+$stmt->close();
+$conn->close();
+?>

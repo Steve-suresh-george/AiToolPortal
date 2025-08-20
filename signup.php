@@ -6,20 +6,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $firstname = $_POST['fname'];
     $lastname  = $_POST['lname'];
     $username  = $_POST['username'];
-    $password  = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $password  = $_POST['password']; // Plain text password from form
 
-    $stmt = $conn->prepare("INSERT INTO users (firstname, lastname, username, password) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssss", $firstname, $lastname, $username, $password);
+    // ---- START: NEW CODE TO CHECK IF USERNAME EXISTS ----
+    $checkStmt = $conn->prepare("SELECT username FROM users WHERE username = ?");
+    $checkStmt->bind_param("s", $username);
+    $checkStmt->execute();
+    $result = $checkStmt->get_result();
 
-    if ($stmt->execute()) {
-        $_SESSION['username'] = $username;
-        $_SESSION['password'] = $password;
-        header("Location: user.php");
-        exit;
+    if ($result->num_rows > 0) {
+        $error = "Error: This username is already taken. Please choose another.";
     } else {
-        $error = "Error: " . $stmt->error;
+        // ---- END: NEW CODE ----
+
+        // Username is available, proceed with insertion
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+        $stmt = $conn->prepare("INSERT INTO users (firstname, lastname, username, password) VALUES (?, ?, ?, ?)");
+        // Bind the hashed password, not the plain one
+        $stmt->bind_param("ssss", $firstname, $lastname, $username, $hashed_password);
+
+        if ($stmt->execute()) {
+            $_SESSION['username'] = $username;
+            // ---- REMOVED: The insecure line $_SESSION['password'] = $password; ----
+            
+            // It's good practice to set the role for a new user too
+            $_SESSION['role'] = 0; // Assuming 0 is the default user role
+            
+            header("Location: user.php");
+            exit;
+        } else {
+            $error = "Error: " . $stmt->error;
+        }
+        $stmt->close();
     }
-    $stmt->close();
+    $checkStmt->close();
 }
 
 $conn->close();
@@ -88,6 +109,23 @@ $conn->close();
         }
         .login-link a:hover {
             color: #34a853;
+        }
+         .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(135deg, #4285f4, #34a853);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
         }
     </style>
 </head>

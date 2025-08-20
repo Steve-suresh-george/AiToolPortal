@@ -21,7 +21,7 @@ if ($search !== '') {
                                 FROM tools t
                                 JOIN categories c ON t.categoryid = c.categoryid 
                                 WHERE t.name LIKE ?");
-    $param = "%$search%";
+    $param = "$search%";
     $toolStmt->bind_param("s", $param);
     $toolStmt->execute();
     $results = $toolStmt->get_result();
@@ -92,6 +92,23 @@ if ($search !== '') {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
         }
+         .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(135deg, #4285f4, #34a853);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
     </style>
 </head>
 <body class="bg-dark">
@@ -110,13 +127,10 @@ if ($search !== '') {
                         <a class="nav-link" href="home.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="signup.php">Sign up</a>
+                        <a class="nav-link active" href="categories.php">Categories</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="suggest.php">Submit Tool</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="feedback.php">Feedback</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="user.php">

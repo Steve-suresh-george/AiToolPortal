@@ -39,11 +39,21 @@ session_start();
             color: transparent;
         }
         .nav-link {
-            color: rgba(255, 255, 255, 0.8);
+             position: relative;
             transition: color 0.3s ease;
         }
-        .nav-link:hover {
-            color: #4285f4;
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(135deg, #4285f4, #34a853);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
         }
         .page-title {
             background: linear-gradient(135deg, #4285f4, #34a853);
@@ -73,9 +83,6 @@ session_start();
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="suggest.php">Submit Tool</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="feedback.php">Feedback</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="user.php">

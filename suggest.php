@@ -1,9 +1,17 @@
 <?php
+session_start(); // 1. Start the session to get the username
+
+// 2. Check if the user is logged in. If not, they can't submit.
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php"); // Redirect them to login
+    exit();
+}
+
 // DB Connection
 $host = 'localhost';
 $user = 'root';
 $pass = '';
-$dbname = 'miniproject'; // Change this
+$dbname = 'miniproject';
 
 $conn = new mysqli($host, $user, $pass, $dbname);
 
@@ -15,25 +23,29 @@ $success = "";
 $error = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $name = trim($_POST['name']);
-  $description = trim($_POST['description']);
-  $link = trim($_POST['link']);
+    $name = trim($_POST['name']);
+    $description = trim($_POST['description']);
+    $link = trim($_POST['link']);
+    $submitted_by = $_SESSION['username']; // 3. Get the username from the session
 
-  if ($name && $description && $link) {
-    $stmt = $conn->prepare("INSERT INTO suggestions (name, description, websitelink) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $name, $description, $link);
+    if ($name && $description && $link) {
+        // 4. Update the INSERT query to include the user
+        $stmt = $conn->prepare("INSERT INTO suggestions (name, description, websitelink, submitted_by) VALUES (?, ?, ?, ?)");
+        // 5. Update bind_param to include the username (4 strings -> "ssss")
+        $stmt->bind_param("ssss", $name, $description, $link, $submitted_by);
 
-    if ($stmt->execute()) {
-      $success = "Tool suggested successfully!";
+        if ($stmt->execute()) {
+            $success = "Tool suggested successfully!";
+        } else {
+            $error = "Error: " . $conn->error;
+        }
+
+        $stmt->close();
     } else {
-      $error = "Error: " . $conn->error;
+        $error = "All fields are required.";
     }
-
-    $stmt->close();
-  } else {
-    $error = "All fields are required.";
-  }
 }
+$conn->close(); // Close connection at the end
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -88,6 +100,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             color: #4285f4;
             font-weight: 500;
         }
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(135deg, #4285f4, #34a853);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
     </style>
 </head>
 <body class="bg-dark">
@@ -110,9 +139,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="signup.php">Sign up</a>
-                    </li>
-                     <li class="nav-item">
-                        <a class="nav-link" href="feedback.php">Feedback</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="user.php">

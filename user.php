@@ -16,7 +16,7 @@ if (!isset($_SESSION['username'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%);
             min-height: 100vh;
         }
         .dashboard-container {
@@ -114,7 +114,7 @@ if (!isset($_SESSION['username'])) {
 
         <main class="main-content">
             <div class="welcome-text">
-                <h2>Welcome back, <?php echo $_SESSION['username']; ?> 👋</h2>
+                <h2>Welcome, <?php echo $_SESSION['username']; ?> 👋</h2>
             </div>
 
             <div class="search-container">
@@ -130,22 +130,23 @@ if (!isset($_SESSION['username'])) {
 
             <div class="row g-4">
                 <div class="col-md-4">
-                    <div class="dashboard-card">
-                        <h3>Saved Tools</h3>
-                        <p class="mb-0">5 tools saved</p>
-                    </div>
+                    <a href="feedback.php" style="text-decoration: none;">
+                        <div class="dashboard-card">
+                            <h3>Feedbacks</h3>
+                        </div>
+                    </a>
                 </div>
                 <div class="col-md-4">
-                    <div class="dashboard-card">
-                        <h3>Recently Used</h3>
-                        <p class="mb-0">ChatGPT, Claude</p>
-                    </div>
+                    <a href="recently1.php" style="text-decoration: none;">
+                        <div class="dashboard-card">
+                            <h3>Recently Used</h3>
+                        </div>
+                    </a>
                 </div>
                 <div class="col-md-4">
                   <a href="suggestion.php" style="text-decoration: none;">
                     <div class="dashboard-card">
                         <h3>Suggestions</h3>
-                        <p class="mb-0">Try Gemini or Perplexity AI</p>
                     </div>
                   </a>
                 </div>

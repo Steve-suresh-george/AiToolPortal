@@ -1,33 +1,54 @@
 <?php
+session_start();
 include 'conn.php';
 
 // Get category ID from URL
 $categoryId = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 // Get category name
-$categoryQuery = "SELECT name FROM categories WHERE categoryid = $categoryId";
-$categoryResult = $conn->query($categoryQuery);
+$categoryQuery = "SELECT name FROM categories WHERE categoryid = ?";
+$stmt = $conn->prepare($categoryQuery);
+$stmt->bind_param("i", $categoryId);
+$stmt->execute();
+$categoryResult = $stmt->get_result();
 $categoryName = $categoryResult->num_rows > 0 ? $categoryResult->fetch_assoc()['name'] : 'Unknown Category';
+$stmt->close();
 
 // Handle feedback submission
-// Feedback success message
 $feedbackSuccess = false;
+$feedbackError = '';
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['feedback'], $_POST['toolid'])) {
-    $feedback = json_encode($_POST['feedback']);
-    $toolid = intval($_POST['toolid']);
-    $stmt = $conn->prepare("UPDATE tools SET feedback = ? WHERE toolid = ?");
-    if ($stmt) {
-        $stmt->bind_param("si", $feedback, $toolid);
-        if ($stmt->execute()) {
-            $feedbackSuccess = true;
+    // Check if the user is logged in
+    if (!isset($_SESSION['username'])) {
+        $feedbackError = 'You must be logged in to submit feedback.';
+    } else {
+        $feedbackComment = $_POST['feedback'];
+        $toolid = intval($_POST['toolid']);
+        $username = $_SESSION['username'];
+        $rating = 0; // Assuming a default rating for now, you can add a rating input later
+
+        // Prepare the INSERT query to add feedback to the feedback table
+        $stmt = $conn->prepare("INSERT INTO feedback (username, toolid, comment, rating) VALUES (?, ?, ?, ?)");
+        if ($stmt) {
+            $stmt->bind_param("sisi", $username, $toolid, $feedbackComment, $rating);
+            if ($stmt->execute()) {
+                $feedbackSuccess = true;
+            } else {
+                $feedbackError = 'Failed to submit feedback. Please try again.';
+            }
+            $stmt->close();
+        } else {
+            $feedbackError = 'Database error: Unable to prepare statement.';
         }
-        $stmt->close();
     }
 }
 
 // Get all tools in this category
-$sql = "SELECT * FROM tools WHERE categoryid = $categoryId";
-$result = $conn->query($sql);
+$sql = "SELECT * FROM tools WHERE categoryid = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $categoryId);
+$stmt->execute();
+$result = $stmt->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -36,9 +57,7 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $categoryName; ?> Tools - AIFindr</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <style>
         body {
@@ -84,7 +103,6 @@ $result = $conn->query($sql);
     </style>
 </head>
 <body class="bg-dark">
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
             <a class="navbar-brand" href="home.html">
@@ -96,13 +114,16 @@ $result = $conn->query($sql);
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
+                        <a class="nav-link" href="home.php">Home</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="categories.php">Categories</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="suggest.php">Submit Tool</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="signup.html">Sign up</a>
+                        <a class="nav-link" href="search.php">Search</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="user.php">
@@ -114,7 +135,6 @@ $result = $conn->query($sql);
         </div>
     </nav>
 
-    <!-- Main Content -->
     <div class="container py-5 mt-5">
         <h1 class="display-4 text-center mb-5 fw-bold category-title">
             <?php echo $categoryName; ?> Tools
@@ -125,35 +145,39 @@ $result = $conn->query($sql);
                 <i class="fas fa-check-circle me-2"></i>Feedback submitted successfully!
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
+        <?php elseif ($feedbackError): ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i><?php echo htmlspecialchars($feedbackError); ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
         <?php endif; ?>
 
         <div class="row g-4">
             <?php while ($row = $result->fetch_assoc()): ?>
                 <div class="col-md-6">
                     <div class="tool-card rounded-4 p-4 text-white h-100">
-                        <h3 class="h4 mb-3"><?php echo $row['name']; ?></h3>
+                        <h3 class="h4 mb-3"><?php echo htmlspecialchars($row['name']); ?></h3>
                         
                         <div class="mb-3">
                             <h6 class="text-primary mb-2">Description</h6>
-                            <p class="text-light mb-3"><?php echo $row['description']; ?></p>
+                            <p class="text-light mb-3"><?php echo htmlspecialchars($row['description']); ?></p>
                         </div>
                         
                         <div class="mb-3">
                             <h6 class="text-primary mb-2">Pricing</h6>
-                            <p class="text-light mb-3"><?php echo $row['pricing']; ?></p>
+                            <p class="text-light mb-3"><?php echo htmlspecialchars($row['pricing']); ?></p>
                         </div>
-
-                        <a href="<?php echo $row['websitelink']; ?>" target="_blank" 
-                           class="btn visit-site-btn text-white mb-4">
-                            <i class="fas fa-external-link-alt me-2"></i>Visit Site
+        
+                        <a href="recently.php?toolid=<?php echo htmlspecialchars($row['toolid']); ?>" class="btn btn-primary visit-site-btn">
+                            <i class="fas fa-external-link-alt me-2"></i>Visit
                         </a>
 
-                        <form method="POST" class="feedback-form">
-                            <input type="hidden" name="toolid" value="<?php echo $row['toolid']; ?>">
+                        <form method="POST" class="feedback-form mt-3">
+                            <input type="hidden" name="toolid" value="<?php echo htmlspecialchars($row['toolid']); ?>">
                             <div class="form-group">
                                 <label class="text-primary mb-2">Your Feedback</label>
                                 <textarea name="feedback" class="form-control mb-3" rows="4" 
-                                    placeholder="Share your experience with this tool..."><?php echo $row['feedback']; ?></textarea>
+                                    placeholder="Share your experience with this tool..."></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary w-100">
                                 <i class="fas fa-paper-plane me-2"></i>Submit Feedback
@@ -165,7 +189,9 @@ $result = $conn->query($sql);
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+<?php
+$conn->close();
+?>

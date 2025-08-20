@@ -21,6 +21,7 @@ session_start();
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 30px;
+            position: relative;
         }
         .search-box {
             background: transparent;
@@ -95,7 +96,7 @@ session_start();
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="home.php">
                 <span class="bg-primary bg-gradient px-3 py-2 rounded-3 fw-bold">AIFindr</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -111,9 +112,6 @@ session_start();
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="signup.php">Sign up</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="feedback.php">Feedback</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="user.php">
