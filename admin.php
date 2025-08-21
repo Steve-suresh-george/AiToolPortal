@@ -62,10 +62,10 @@ try {
 }
 
 // --- Fetch all feedback from all users ---
-$feedbackQuery = "SELECT t.name AS toolname, f.username, f.comment, f.created_at
+$feedbackQuery = "SELECT t.name AS toolname, f.username, f.comment, f.createdat
                   FROM feedback AS f
                   JOIN tools AS t ON f.toolid = t.toolid
-                  ORDER BY f.created_at DESC";
+                  ORDER BY f.createdat DESC";
 $feedbackResult = $conn->query($feedbackQuery);
 
 // --- Fetch all suggestions from all users ---

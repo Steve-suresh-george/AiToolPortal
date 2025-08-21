@@ -12,11 +12,11 @@ $current_username = $_SESSION['username'];
 
 // Fetch all feedback entries for the logged-in user
 // This assumes you have a `feedback` table with a `username` column
-$query = "SELECT t.name, f.comment, f.created_at
+$query = "SELECT t.name, f.comment, f.createdat
           FROM feedback AS f
           JOIN tools AS t ON f.toolid = t.toolid
           WHERE f.username = ?
-          ORDER BY f.created_at DESC";
+          ORDER BY f.createdat DESC";
 
 // Using prepared statements to prevent SQL injection
 $stmt = $conn->prepare($query);
@@ -31,14 +31,13 @@ $result = $stmt->get_result();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Feedback - AIFindr</title>
+    <title>My Feedback</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <style>
         body {
             background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%);
             min-height: 100vh;
-            color: white;
         }
         .feedback-card {
             background: rgba(255, 255, 255, 0.05);
@@ -78,9 +77,54 @@ $result = $stmt->get_result();
             background: rgba(255, 255, 255, 0.2);
             color: white;
         }
+         .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(135deg, #4285f4, #34a853);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
     </style>
 </head>
-<body>
+<body class="bg-dark text-white">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="home.php">
+        <span class="bg-primary bg-gradient px-3 py-2 rounded-3 fw-bold">AIFindr</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav align-items-center ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="home.php">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="categories.php">Categories</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="search.php">Search</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="user.php">
+                <i class="fa-solid fa-circle-user fa-lg"></i>
+            </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
     <div class="container py-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="page-title display-5 mb-0">My Feedback</h1>
@@ -97,8 +141,8 @@ $result = $stmt->get_result();
                                         <?php echo htmlspecialchars($row['name']); ?>
                                     </h3>
                                 </div>
-                                <?php if (isset($row['created_at'])): ?>
-                                    <span class="date"><?php echo date("F j, Y", strtotime($row['created_at'])); ?></span>
+                                <?php if (isset($row['createdat'])): ?>
+                                    <span class="date"><?php echo date("F j, Y", strtotime($row['createdat'])); ?></span>
                                 <?php endif; ?>
                             </div>
                             <p class="mb-2"><?php echo htmlspecialchars($row['comment']); ?></p>

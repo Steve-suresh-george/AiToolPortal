@@ -53,6 +53,12 @@ $result = mysqli_stmt_get_result($stmt);
         .nav-link:hover::after {
             width: 100%;
         }
+        .page-title {
+            background: linear-gradient(135deg, #4285f4, #34a853);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
     </style>
 </head>
 <body class="bg-dark text-white">
@@ -65,7 +71,7 @@ $result = mysqli_stmt_get_result($stmt);
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav align-items-center">
+      <ul class="navbar-nav align-items-center ms-auto">
         <li class="nav-item">
           <a class="nav-link" href="home.php">Home</a>
         </li>
@@ -85,7 +91,9 @@ $result = mysqli_stmt_get_result($stmt);
   </div>
 </nav>
 <div class="container py-5">
-    <h1 class="text-center mb-5">Your Suggested Tools</h1>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="page-title display-5 mb-0">Suggestions</h1>
+    </div>
 
     <?php
     if (mysqli_num_rows($result) > 0) {

@@ -12,7 +12,7 @@ if (isset($_SESSION['username'])) {
 
 // SQL query to get the top 5 most recently used tools
 // Note: Changed "userrecenttools" to "user_recent_tools" for consistency.
-$sql = "SELECT t.toolid,t.name
+$sql = "SELECT t.toolid,t.name,lastusedat
         FROM userrecenttools AS urt
         JOIN tools AS t ON urt.toolid = t.toolid
         WHERE urt.username = ?
@@ -60,6 +60,12 @@ try {
         .nav-link:hover::after {
             width: 100%;
         }
+        .page-title {
+            background: linear-gradient(135deg, #4285f4, #34a853);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
     </style>
 </head>
 <body class="bg-dark text-white">
@@ -95,30 +101,24 @@ try {
     </div>
   </div>
 </nav>
-
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">Recently Used</h5>
-                </div>
-                <div class="card-body p-0">
-                    <?php if (!empty($recent_tools)): ?>
-                        <ul class="list-group list-group-flush">
-                            <?php foreach ($recent_tools as $tool): ?>
-                                <li class="list-group-item">
-                                    <?php echo htmlspecialchars($tool['name']); ?>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
-                    <?php else: ?>
-                        <p class="p-3 mb-0 text-muted">You haven't used any tools recently.</p>
-                    <?php endif; ?>
-                </div>
-            </div>
+ <div class="container py-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="page-title display-5 mb-0">Recently Used</h1>
         </div>
-    </div>
+        <div class="card-body p-0">
+            <?php if (!empty($recent_tools)): ?>
+                <ul class="list-group">
+                    <?php foreach ($recent_tools as $tool): ?>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><?php echo htmlspecialchars($tool['name']); ?></span>
+                            <small class="text-muted"><?php echo htmlspecialchars($tool['lastusedat']); ?></small>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php else: ?>
+                <p class="p-3 mb-0 text-muted">You haven't used any tools recently.</p>
+            <?php endif; ?>
+        </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

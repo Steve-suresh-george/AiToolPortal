@@ -28,9 +28,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['feedback'], $_POST['to
         $rating = 0; // Assuming a default rating for now, you can add a rating input later
 
         // Prepare the INSERT query to add feedback to the feedback table
-        $stmt = $conn->prepare("INSERT INTO feedback (username, toolid, comment, rating) VALUES (?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO feedback (username, toolid, comment) VALUES (?, ?, ?)");
         if ($stmt) {
-            $stmt->bind_param("sisi", $username, $toolid, $feedbackComment, $rating);
+            $stmt->bind_param("sis", $username, $toolid, $feedbackComment);
             if ($stmt->execute()) {
                 $feedbackSuccess = true;
             } else {
