@@ -90,6 +90,18 @@ session_start();
         .nav-link:hover::after {
             width: 100%;
         }
+        .video-container {
+        margin-bottom: 4rem; /* Adds space between the video and the tool cards */
+        margin-top: 2rem; /* Adds space above the video */
+        text-align: center;
+    }
+    .promo-video {
+        max-width: 100%;
+        height: auto;
+        border-radius: 15px; /* Matches the rounded aesthetic of your site */
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
     </style>
 </head>
 <body>
@@ -136,6 +148,13 @@ session_start();
             </div>
         </div>
     </div>
+
+    <div class="video-container">
+    <video class="promo-video" width="900" autoplay loop muted>
+        <source src= "images/Untitled_Project.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>
 
     <!-- Tools Grid -->
     <div class="container py-5">
