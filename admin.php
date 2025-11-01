@@ -170,7 +170,8 @@ $suggestionsResult = $conn->query($suggestionsQuery);
                                     <h5 class="mb-0 text-primary"><?php echo htmlspecialchars($row['toolname']); ?></h5>
                                     <small class="text-muted">By: <?php echo htmlspecialchars($row['username']); ?></small>
                                 </div>
-                                <small class="text-muted"><?php echo date("F j, Y", strtotime($row['created_at'])); ?></small>
+                                <small class="text-muted"><?php echo date("F j, Y", strtotime($row['created
+                                at'])); ?></small>
                             </div>
                             <p class="mb-0"><?php echo htmlspecialchars($row['comment']); ?></p>
                         </div>
