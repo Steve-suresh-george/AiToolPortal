@@ -66,6 +66,14 @@ try {
             background-clip: text;
             color: transparent;
         }
+        .tool-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            padding: 20px;
+        }
     </style>
 </head>
 <body class="bg-dark text-white">
@@ -90,9 +98,6 @@ try {
           <a class="nav-link" href="search.php">Search</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="feedback.php">Feedback</a>
-        </li>
-        <li class="nav-item">
             <a class="nav-link" href="user.php">
                 <i class="fa-solid fa-circle-user fa-lg"></i>
             </a>
@@ -103,21 +108,30 @@ try {
 </nav>
  <div class="container py-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="page-title display-5 mb-0">Recently Used</h1>
+
+            <h1 class="mb-4">Recently Used</h1>
+
         </div>
-        <div class="card-body p-0">
+
+         <p class="text-muted"><a href="user.php" class="text-white text-decoration-none"><i class="fas fa-arrow-left me-2"></i>Back to Dashboard</a></p>
+        <hr class="text-white-50 mb-5">
+        <div class="row">
             <?php if (!empty($recent_tools)): ?>
-                <ul class="list-group">
+                <div class="col-lg-6">
+                    <div class="tool-card shadow">
+                <ul>
                     <?php foreach ($recent_tools as $tool): ?>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <li class="d-flex justify-content-between align-items-center py-2">
                             <span><?php echo htmlspecialchars($tool['name']); ?></span>
-                            <small class="text-muted"><?php echo htmlspecialchars($tool['lastusedat']); ?></small>
+                            <small><?php echo htmlspecialchars($tool['lastusedat']); ?></small>
                         </li>
                     <?php endforeach; ?>
                 </ul>
             <?php else: ?>
                 <p class="p-3 mb-0 text-muted">You haven't used any tools recently.</p>
             <?php endif; ?>
+            </div>
+            </div>
         </div>
 </div>
 

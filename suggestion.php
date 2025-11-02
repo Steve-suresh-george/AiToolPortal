@@ -12,7 +12,7 @@ if (!isset($_SESSION['username'])) {
 $loggedInUsername = $_SESSION['username'];
 
 // 3. Prepare a SQL query to select suggestions submitted ONLY by this user.
-$sql = "SELECT name, description, websitelink,status
+$sql = "SELECT id, name, description, websitelink,status
         FROM suggestions 
         WHERE submitted_by = ?"; // The correct WHERE clause
 
@@ -59,6 +59,14 @@ $result = mysqli_stmt_get_result($stmt);
             background-clip: text;
             color: transparent;
         }
+        .tool-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            padding: 20px;
+        }
     </style>
 </head>
 <body class="bg-dark text-white">
@@ -92,25 +100,33 @@ $result = mysqli_stmt_get_result($stmt);
 </nav>
 <div class="container py-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="page-title display-5 mb-0">Suggestions</h1>
-    </div>
-
+            <h1 class="mb-4">Suggestions</h1>
+        </div>
+    
+    <p class="text-muted"><a href="user.php" class="text-white text-decoration-none"><i class="fas fa-arrow-left me-2"></i>Back to Dashboard</a></p>
+    <hr class="text-white-50 mb-5">
+    <div class="row">
     <?php
     if (mysqli_num_rows($result) > 0) {
         echo '<div class="row g-4">';
         while ($row = mysqli_fetch_assoc($result)) {
             echo '
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 shadow-sm text-dark">
-                    <div class="card-body">
+            <div class="col-md-6">
+                    <div class="tool-card shadow">
                         <h5 class="card-title">' . htmlspecialchars($row['name']) . '</h5>
                         <p class="card-text">' . htmlspecialchars($row['description']) . '</p>
                         <p class="card-text">
                             <a href="' . htmlspecialchars($row['websitelink']) . '">' . htmlspecialchars($row['websitelink']) . '</a>
                         </p>
-                        <p class="card-text">' . htmlspecialchars($row['status']) . '</p>
+                        <p class="card-text mt-3">
+                            <span class="badge ' . ($row['status'] === 'Approved' ? 'bg-success' : ($row['status'] === 'Pending' ? 'bg-warning text-dark' : 'bg-danger')) . '">
+                                ' . htmlspecialchars($row['status']) . '
+                            </span>
+                        </p>
+                        <button type="button" class="btn btn-danger btn-sm mt-2" data-suggestion-id="' . htmlspecialchars($row['id']) . '" onclick="deleteSuggestion(this);">
+                            <i class="fas fa-trash-alt me-1"></i> Remove
+                        </button>
                     </div>
-                </div>
             </div>';
         }
         echo '</div>';
@@ -124,7 +140,69 @@ $result = mysqli_stmt_get_result($stmt);
     mysqli_stmt_close($stmt);
     mysqli_close($conn);
     ?>
+    </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    /**
+     * Deletes a suggestion entry using the API and removes the card from the UI.
+     * @param {HTMLElement} element - The button element that was clicked.
+     */
+    function deleteSuggestion(element) {
+        // Ask for confirmation before deleting
+        if (!confirm("Are you sure you want to delete this suggestion?")) {
+            return;
+        }
+
+        const suggestionId = element.getAttribute('data-suggestion-id');
+        
+        if (!suggestionId) {
+            alert("Error: Missing suggestion ID.");
+            return;
+        }
+
+        // Set loading state
+        const originalHtml = element.innerHTML;
+        element.disabled = true;
+        element.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+
+        const formData = new FormData();
+        formData.append('suggestion_id', suggestionId);
+
+        fetch('api_delete_suggestion.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.status === 401) {
+                alert('You must be logged in to delete suggestions.');
+                element.disabled = false;
+                element.innerHTML = originalHtml;
+                return { success: false, message: 'Not logged in' };
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                // Find the closest parent column (col-md-6) and remove it from the display
+                const cardCol = element.closest('.col-md-6');
+                if (cardCol) {
+                    cardCol.remove();
+                    alert("Suggestion successfully deleted!");
+                }
+            } else {
+                alert("Error deleting suggestion: " + data.message);
+                element.disabled = false;
+                element.innerHTML = originalHtml;
+            }
+        })
+        .catch(error => {
+            console.error("Network error deleting suggestion:", error);
+            alert("A network error occurred.");
+            element.disabled = false;
+            element.innerHTML = originalHtml;
+        });
+    }
+</script>
 </body>
 </html>

@@ -168,9 +168,18 @@ $result = $stmt->get_result();
                             <p class="text-light mb-3"><?php echo htmlspecialchars($row['pricing']); ?></p>
                         </div>
         
-                        <a href="recently.php?toolid=<?php echo htmlspecialchars($row['toolid']); ?>" class="btn btn-primary visit-site-btn">
-                            <i class="fas fa-external-link-alt me-2"></i>Visit
-                        </a>
+                        <div class="d-flex gap-2 mb-3">
+                            <a href="#" class="btn btn-primary visit-site-btn flex-grow-1" data-tool-id="<?php echo htmlspecialchars($row['toolid']); ?>"
+                            data-tool-url="<?php echo htmlspecialchars($row['websitelink']); ?>"onclick="recordAndVisit(this); return false;">
+                                <i class="fas fa-external-link-alt me-2"></i>Visit
+                            </a>
+
+                            <button type="button" id="save-btn-<?php echo htmlspecialchars($row['toolid']); ?>" 
+                            class="btn btn-outline-light save-tool-btn" data-tool-id="<?php echo htmlspecialchars($row['toolid']); ?>"
+                            onclick="toggleBookmark(this);">
+                                <i class="far fa-bookmark"></i> Save Tool
+                             </button>
+                        </div>
 
                         <form method="POST" class="feedback-form mt-3">
                             <input type="hidden" name="toolid" value="<?php echo htmlspecialchars($row['toolid']); ?>">
@@ -190,6 +199,78 @@ $result = $stmt->get_result();
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    // ... [Your existing recordAndVisit function goes here] ...
+
+    /**
+     * Toggles the bookmark status of a tool via API call.
+     * @param {HTMLElement} element - The button element that was clicked.
+     */
+    function toggleBookmark(element) {
+        const toolId = element.getAttribute('data-tool-id');
+        
+        console.log("Attempting to save tool ID:", toolId);
+
+        if (!toolId) {
+            console.error("Missing tool ID for bookmark.");
+            return;
+        }
+
+        // 1. Get current state and set loading state
+        const originalHtml = element.innerHTML;
+        element.disabled = true;
+        element.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+
+        // 2. Prepare the POST request data
+        const formData = new FormData();
+        formData.append('toolid', toolId);
+
+        // 3. Call the API endpoint
+        fetch('api_toggle_bookmark.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            // Check for unauthenticated error response (401)
+            if (response.status === 401) {
+                alert('You must be logged in to save tools.');
+                element.disabled = false;
+                element.innerHTML = originalHtml;
+                return { success: false, message: 'Not logged in' }; // Return error object to prevent further processing
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                // 4. Update the button based on the action returned by the server
+                if (data.action === 'saved') {
+                    element.classList.remove('btn-outline-light');
+                    element.classList.add('btn-success');
+                    element.innerHTML = '<i class="fas fa-bookmark"></i> Saved!';
+                } else if (data.action === 'removed') {
+                    element.classList.remove('btn-success');
+                    element.classList.add('btn-outline-light');
+                    element.innerHTML = '<i class="far fa-bookmark"></i> Save Tool';
+                }
+                setTimeout(() => {
+                    element.disabled = false;
+                }, 1000); // Re-enable button after a short delay
+            } else {
+                // Handle API error
+                alert("Could not update bookmark status: " + data.message);
+                element.disabled = false;
+                element.innerHTML = originalHtml;
+            }
+        })
+        .catch(error => {
+            // Handle network failure
+            console.error("Network error toggling bookmark:", error);
+            alert("A network error occurred.");
+            element.disabled = false;
+            element.innerHTML = originalHtml;
+        });
+    }
+</script>
 </body>
 </html>
 <?php

@@ -150,6 +150,13 @@ if (!isset($_SESSION['username'])) {
                     </div>
                   </a>
                 </div>
+                 <div class="col-md-4">
+                  <a href="usersavedtools.php" style="text-decoration: none;">
+                    <div class="dashboard-card">
+                        <h3>Saved Tools</h3>
+                    </div>
+                  </a>
+                </div>
             </div>
         </main>
     </div>

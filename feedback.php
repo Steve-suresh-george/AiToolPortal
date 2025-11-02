@@ -12,7 +12,7 @@ $current_username = $_SESSION['username'];
 
 // Fetch all feedback entries for the logged-in user
 // This assumes you have a `feedback` table with a `username` column
-$query = "SELECT t.name, f.comment, f.createdat
+$query = "SELECT f.id, t.name, f.comment, f.createdat
           FROM feedback AS f
           JOIN tools AS t ON f.toolid = t.toolid
           WHERE f.username = ?
@@ -94,6 +94,14 @@ $result = $stmt->get_result();
         .nav-link:hover::after {
             width: 100%;
         }
+        .tool-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            padding: 20px;
+        }
     </style>
 </head>
 <body class="bg-dark text-white">
@@ -127,15 +135,16 @@ $result = $stmt->get_result();
 </nav>
     <div class="container py-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="page-title display-5 mb-0">My Feedback</h1>
+            <h1 class="mb-4"><i class="fa-solid fa-comment"></i>My Feedback</h1>
         </div>
-
+    
+        <p class="text-muted"><a href="user.php" class="text-white text-decoration-none"><i class="fas fa-arrow-left me-2"></i>Back to Dashboard</a></p>
+        <hr class="text-white-50 mb-5">
+        <div class="row">
         <?php if ($result && mysqli_num_rows($result) > 0): ?>
-            <div class="row">
                 <?php while ($row = $result->fetch_assoc()): ?>
-                    <div class="col-12">
-                        <div class="feedback-card p-4 rounded-4">
-                            <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="col-lg-6">
+                        <div class="tool-card shadow">
                                 <div>
                                     <h3 class="tool-name h5 mb-1">
                                         <?php echo htmlspecialchars($row['name']); ?>
@@ -144,13 +153,15 @@ $result = $stmt->get_result();
                                 <?php if (isset($row['createdat'])): ?>
                                     <span class="date"><?php echo date("F j, Y", strtotime($row['createdat'])); ?></span>
                                 <?php endif; ?>
-                            </div>
-                            <p class="mb-2"><?php echo htmlspecialchars($row['comment']); ?></p>
+                                <p class="mb-2"><?php echo htmlspecialchars($row['comment']); ?></p>
+                                <button type="button" class="btn btn-danger btn-sm" data-feedback-id="<?php echo htmlspecialchars($row['id']); ?>"onclick="deleteFeedback(this);">
+                                    <i class="fas fa-trash-alt me-1"></i> Remove
+                                </button>
                         </div>
                     </div>
                 <?php endwhile; ?>
-            </div>
         <?php else: ?>
+        </div> 
             <div class="text-center py-5">
                 <i class="fas fa-comments fa-3x mb-3 text-secondary"></i>
                 <h3>No Feedback Found</h3>
@@ -160,6 +171,67 @@ $result = $stmt->get_result();
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    /**
+     * Deletes a feedback entry using the API and removes the card from the UI.
+     * @param {HTMLElement} element - The button element that was clicked.
+     */
+    function deleteFeedback(element) {
+        // Ask for confirmation before deleting
+        if (!confirm("Are you sure you want to delete this feedback? This action cannot be undone.")) {
+            return;
+        }
+
+        const feedbackId = element.getAttribute('data-feedback-id');
+        
+        if (!feedbackId) {
+            alert("Error: Missing feedback ID.");
+            return;
+        }
+
+        // Set loading state
+        const originalHtml = element.innerHTML;
+        element.disabled = true;
+        element.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+
+        const formData = new FormData();
+        formData.append('feedback_id', feedbackId);
+
+        fetch('api_delete_feedback.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.status === 401) {
+                alert('You must be logged in to delete feedback.');
+                element.disabled = false;
+                element.innerHTML = originalHtml;
+                return { success: false, message: 'Not logged in' };
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                // Find the closest parent card (col-lg-6) and remove it from the display
+                const cardCol = element.closest('.col-lg-6');
+                if (cardCol) {
+                    cardCol.remove();
+                    alert("Feedback successfully deleted!");
+                }
+            } else {
+                alert("Error deleting feedback: " + data.message);
+                element.disabled = false;
+                element.innerHTML = originalHtml;
+            }
+        })
+        .catch(error => {
+            console.error("Network error deleting feedback:", error);
+            alert("A network error occurred.");
+            element.disabled = false;
+            element.innerHTML = originalHtml;
+        });
+    }
+</script>
 </body>
 </html>
 <?php
