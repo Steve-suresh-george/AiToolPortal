@@ -180,7 +180,7 @@ $conn->close();
             <?php else: ?>
                 <div class="col-12">
                     <div class="alert alert-info text-center" role="alert">
-                        You haven't saved any tools yet! Visit the <a href="home.php" class="alert-link">Home page</a> to find some.
+                        You haven't saved any tools yet! Visit the <a href="categories.php" class="alert-link">Categories page</a> to find some.
                     </div>
                 </div>
             <?php endif; ?>
