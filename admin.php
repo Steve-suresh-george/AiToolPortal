@@ -168,10 +168,9 @@ $suggestionsResult = $conn->query($suggestionsQuery);
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <div>
                                     <h5 class="mb-0 text-primary"><?php echo htmlspecialchars($row['toolname']); ?></h5>
-                                    <small class="text-muted">By: <?php echo htmlspecialchars($row['username']); ?></small>
+                                    <small class="card-text mb-2">By: <?php echo htmlspecialchars($row['username']); ?></small>
                                 </div>
-                                <small class="text-muted"><?php echo date("F j, Y", strtotime($row['created
-                                at'])); ?></small>
+                                <small class="card-text mb-2"><?php echo date("F j, Y", strtotime($row['createdat'])); ?></small>
                             </div>
                             <p class="mb-0"><?php echo htmlspecialchars($row['comment']); ?></p>
                         </div>
@@ -195,7 +194,7 @@ $suggestionsResult = $conn->query($suggestionsQuery);
                             <h5 class="card-title text-primary"><?php echo htmlspecialchars($row['name']); ?></h5>
                             <p class="card-text mb-2"><?php echo htmlspecialchars($row['description']); ?></p>
                             <p class="card-text mb-1"><a href="<?php echo htmlspecialchars($row['websitelink']); ?>" target="_blank" class="text-info">Visit Site</a></p>
-                            <small class="text-muted">Submitted by: <?php echo htmlspecialchars($row['submitted_by']); ?></small>
+                            <small class="card-text mb-2">Submitted by: <?php echo htmlspecialchars($row['submitted_by']); ?></small>
                         </div>
                     </div>
                 <?php endwhile; ?>

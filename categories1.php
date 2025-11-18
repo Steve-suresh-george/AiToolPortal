@@ -169,8 +169,19 @@ $result = $stmt->get_result();
                         </div>
         
                         <div class="d-flex gap-2 mb-3">
-                            <a href="#" class="btn btn-primary visit-site-btn flex-grow-1" data-tool-id="<?php echo htmlspecialchars($row['toolid']); ?>"
-                            data-tool-url="<?php echo htmlspecialchars($row['websitelink']); ?>"onclick="recordAndVisit(this); return false;">
+                            <?php
+                                $rawLink = isset($row['websitelink']) ? trim($row['websitelink']) : '';
+                                if ($rawLink && !preg_match('#^https?://#i', $rawLink)) {
+                                    if (strpos($rawLink, '//') === 0) {
+                                        $href = 'https:' . $rawLink;
+                                    } else {
+                                        $href = 'https://' . ltrim($rawLink, '/');
+                                    }
+                                } else {
+                                    $href = $rawLink;
+                                }
+                            ?>
+                            <a href="<?php echo htmlspecialchars($href ?: '#'); ?>" target="_blank" rel="noopener noreferrer" class="btn btn-primary visit-site-btn flex-grow-1" data-tool-id="<?php echo htmlspecialchars($row['toolid']); ?>" data-tool-url="<?php echo htmlspecialchars($href); ?>" onclick="recordAndVisit(this);">
                                 <i class="fas fa-external-link-alt me-2"></i>Visit
                             </a>
 
@@ -200,7 +211,45 @@ $result = $stmt->get_result();
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-    // ... [Your existing recordAndVisit function goes here] ...
+    /**
+     * Open the tool's website in a new tab and (optionally) record the visit.
+     * @param {HTMLElement} el - The anchor element that was clicked.
+     * @returns {boolean} - Always returns false to prevent the default anchor action.
+     */
+    function recordAndVisit(el) {
+        var url = (el.getAttribute('data-tool-url') || '').trim();
+        var toolId = el.getAttribute('data-tool-id');
+
+        if (!url) {
+            // No URL to visit, let the default behavior continue (will likely do nothing)
+            return;
+        }
+
+        // Prepare analytics data
+        try {
+            var fd = new FormData();
+            if (toolId) fd.append('toolid', toolId);
+            fd.append('url', url);
+
+            // Prefer sendBeacon for reliability on navigation; fall back to fetch with keepalive
+            if (navigator.sendBeacon) {
+                // sendBeacon accepts ArrayBuffer/Blob/FormData; use FormData directly where supported
+                try {
+                    navigator.sendBeacon('api_record_visit.php', fd);
+                } catch (e) {
+                    // Some browsers may not support FormData with sendBeacon; fallback to fetch below
+                    fetch('api_record_visit.php', { method: 'POST', body: fd, keepalive: true }).catch(function(){});
+                }
+            } else {
+                fetch('api_record_visit.php', { method: 'POST', body: fd, keepalive: true }).catch(function(){});
+            }
+        } catch (e) {
+            // ignore analytics errors
+        }
+
+        // Do not prevent the anchor's default navigation; let the href + target handle opening.
+        return;
+    }
 
     /**
      * Toggles the bookmark status of a tool via API call.

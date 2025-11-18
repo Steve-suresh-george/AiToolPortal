@@ -10,13 +10,16 @@ if (isset($_SESSION['username'])) {
     $current_username = $_SESSION['username'];
 }
 
+// Track whether user is logged in
+$not_logged_in = empty($current_username);
+
 // SQL query to get the top 5 most recently used tools
-// Note: Changed "userrecenttools" to "user_recent_tools" for consistency.
-$sql = "SELECT t.toolid,t.name,lastusedat
-        FROM userrecenttools AS urt
-        JOIN tools AS t ON urt.toolid = t.toolid
-        WHERE urt.username = ?
-        ORDER BY urt.lastusedat DESC";
+$sql = "SELECT t.toolid, t.name, urt.lastusedat
+    FROM userrecenttools AS urt
+    JOIN tools AS t ON urt.toolid = t.toolid
+    WHERE urt.username = ?
+    ORDER BY urt.lastusedat DESC
+    LIMIT 5";
 
 try {
     $stmt = $conn->prepare($sql);
@@ -28,6 +31,11 @@ try {
 
 } catch (Exception $e) {
     die("Could not fetch recent tools: " . $e->getMessage());
+}
+
+// If user is not logged in, ensure recent_tools is empty to avoid accidental data exposure
+if ($not_logged_in) {
+    $recent_tools = [];
 }
 ?>
 <!DOCTYPE html>
@@ -116,22 +124,34 @@ try {
          <p class="text-muted"><a href="user.php" class="text-white text-decoration-none"><i class="fas fa-arrow-left me-2"></i>Back to Dashboard</a></p>
         <hr class="text-white-50 mb-5">
         <div class="row">
-            <?php if (!empty($recent_tools)): ?>
+            <?php if (!empty($recent_tools) && !$not_logged_in): ?>
                 <div class="col-lg-6">
                     <div class="tool-card shadow">
-                <ul>
-                    <?php foreach ($recent_tools as $tool): ?>
-                        <li class="d-flex justify-content-between align-items-center py-2">
-                            <span><?php echo htmlspecialchars($tool['name']); ?></span>
-                            <small><?php echo htmlspecialchars($tool['lastusedat']); ?></small>
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
+                        <ul>
+                            <?php foreach ($recent_tools as $tool): ?>
+                                <li class="d-flex justify-content-between align-items-center py-2">
+                                    <span><?php echo htmlspecialchars($tool['name']); ?></span>
+                                    <small><?php echo htmlspecialchars($tool['lastusedat']); ?></small>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                </div>
+
+            <?php elseif ($not_logged_in): ?>
+                <div class="col-12">
+                    <div class="alert alert-warning text-center" role="alert">
+                        Please <a href="login.php" class="alert-link">log in</a> to view your recently used tools.
+                    </div>
+                </div>
+
             <?php else: ?>
-                <p class="p-3 mb-0 text-muted">You haven't used any tools recently.</p>
+                <div class="col-12">
+                    <div class="alert alert-info text-center" role="alert">
+                        You haven't visited any tools yet! Visit the <a href="categories.php" class="alert-link">Categories page</a> to find some.
+                    </div>
+                </div>
             <?php endif; ?>
-            </div>
-            </div>
         </div>
 </div>
 

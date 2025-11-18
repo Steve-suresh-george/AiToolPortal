@@ -17,7 +17,7 @@ if (!isset($_GET['toolid']) || !is_numeric($_GET['toolid'])) {
 }
 
 $current_username = $_SESSION['username'];
-$toolid = $_GET['toolid'];
+$toolid = intval($_GET['toolid']);
 
 // --- Step 1: Record the tool usage in the database ---
 // SQL query to insert or update the tool usage record
@@ -46,7 +46,7 @@ try {
     $result = $stmt_url->get_result();
 
     if ($row = $result->fetch_assoc()) {
-        $tool_url = $row['websitelink'];
+        $tool_url = trim($row['websitelink']);
     }
     $stmt_url->close();
 } catch (Exception $e) {
@@ -57,11 +57,32 @@ try {
 $conn->close();
 
 // --- Step 3: Redirect the user to the tool's URL ---
+// Normalize and validate URL before redirecting
 if ($tool_url) {
-    header("Location: " . $tool_url);
+    // Ensure URL has a scheme; default to https if missing
+    if (!preg_match('#^https?://#i', $tool_url)) {
+        // If it starts with // (protocol-relative), prepend https:
+        if (strpos($tool_url, '//') === 0) {
+            $tool_url = 'https:' . $tool_url;
+        } else {
+            $tool_url = 'https://' . ltrim($tool_url, '/');
+        }
+    }
+
+    // Validate final URL
+    if (filter_var($tool_url, FILTER_VALIDATE_URL)) {
+        header("Location: " . $tool_url);
+        exit;
+    } else {
+        error_log('Invalid tool URL for toolid=' . $toolid . ' url=' . $tool_url);
+        header("Location: home.php");
+        exit;
+    }
+
 } else {
     // Redirect to an error page or the homepage if the URL is not found
     header("Location: home.php");
+    exit;
 }
 exit;
 ?>

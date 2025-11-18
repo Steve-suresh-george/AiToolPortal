@@ -131,9 +131,11 @@ $result = mysqli_stmt_get_result($stmt);
         }
         echo '</div>';
     } else {
-        echo' <div class="text-center">
-            <p class="lead">You haven\'t suggested any tools yet.</p>
-            <a href="suggest.php" class="btn btn-success">Suggest a Tool Now!</a>
+        echo' <div class="col-12">
+            <div class="alert alert-info text-center" role="alert">You havent suggsted any toosl yet! 
+                Visit the
+                <a href="suggest.php" class="alert-link"> Suggestion page </a> to suggest tools.
+            </div>
         </div>';
     }
 
